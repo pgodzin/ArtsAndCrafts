@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>African</item>
+        <item>Contemporary Pop</item>
+        <item>Greek and Roman</item>
+        <item>Impressionism</item>
+        <item>Minimalism</item>
+        <item>Post-War American</item>
+        <item>Post-War European</item>
+        <item>Renaissance</item>
+    </string-array>
+</resources>
