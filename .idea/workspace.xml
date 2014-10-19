@@ -37,11 +37,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f32556f-98a9-4c97-a699-00e7a0d69a0f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/example/artsandcrafts/GridActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/grid.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/httpclient.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/artsandcrafts.iml" afterPath="$PROJECT_DIR$/artsandcrafts.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="aretsy.iws" />
@@ -583,7 +578,11 @@
       <created>1413675224420</created>
       <updated>1413675224420</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="created grid activity, need to fix post request">
+      <created>1413686266632</created>
+      <updated>1413686266632</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -638,7 +637,8 @@
     <MESSAGE value="Renamed directories to artsandcrafts" />
     <MESSAGE value="main page with categories  created" />
     <MESSAGE value="background design updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="background design updated" />
+    <MESSAGE value="created grid activity, need to fix post request" />
+    <option name="LAST_COMMIT_MESSAGE" value="created grid activity, need to fix post request" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
