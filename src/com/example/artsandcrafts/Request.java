@@ -8,9 +8,10 @@ import java.net.URL;
 
 public class Request {
 
-    private final String USER_AGENT = "Mozilla/5.0";
+        private String USER_AGENT = "Mozilla/5.0";
     private String url = "";
     private String parameters, output;
+    private String token = "";
 
     public Request() {
         this.url = "";
@@ -24,6 +25,35 @@ public class Request {
             this.parameters += key + "=" + val;
         else
             this.parameters += "&" + key + "=" + val;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void makeGetCall() throws Exception {
+        // Init connection objects
+        URL obj = new URL(getUrl());
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        // Adding request header (-GET-)
+        con.setRequestMethod("GET");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("X-XAPP-Token", token);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        // Saving the output
+        this.output = response.toString();
     }
 
     // HTTP POST request
@@ -47,15 +77,6 @@ public class Request {
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
-
-                /* For debugging
-                        // Getting the response code
-                        int responseCode = con.getResponseCode();
-
-                        System.out.println("\n\tSending 'POST' request to URL : " + url);
-                        System.out.println("\tPost parameters : " + urlParameters);
-                        System.out.println("\tResponse Code : " + responseCode+"\n");
-                */
 
         // Reading the incoming stream
         BufferedReader in = new BufferedReader(
