@@ -2,14 +2,12 @@ package com.example.artsandcrafts;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
 public class MainActivity extends ListActivity {
     @Override
@@ -20,6 +18,43 @@ public class MainActivity extends ListActivity {
         lv.setCacheColorHint(0);
         lv.setBackgroundResource(R.drawable.bg);
         setListAdapter(new ImageAdapter(this, categories));
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+// If the nav drawer is open, hide action items related to the content view
+        menu.findItem(R.id.search).setVisible(true);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search, menu);
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        // Assumes current activity is the searchable activity
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.search:
+                Toast.makeText(MainActivity.this, "Searched", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void switchToSearchFragment(String query) {
+        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        intent.putExtra("query", query);
+        startActivity(intent);
     }
 
     public class ImageAdapter extends BaseAdapter {
@@ -48,7 +83,7 @@ public class MainActivity extends ListActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             if (inflater == null)
                 inflater = (LayoutInflater) activity
@@ -59,6 +94,14 @@ public class MainActivity extends ListActivity {
             TextView name = (TextView) convertView.findViewById(R.id.category);
             name.setText(categories[position]);
 
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MainActivity.this, GridActivity.class);
+                    i.putExtra("category", categories[position]);
+                    startActivity(i);
+                }
+            });
             return convertView;
         }
 

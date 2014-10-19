@@ -1,30 +1,13 @@
 package com.example.artsandcrafts;
 
-import android.app.SearchManager;
-import android.provider.SearchRecentSuggestions;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +21,7 @@ public class GridActivity extends Activity {
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this, thumbIds));
         String category = getIntent().getStringExtra("category");
+        setTitle(category);
         //new TokenTask().execute();
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -54,15 +38,17 @@ public class GridActivity extends Activity {
         menu.findItem(R.id.search).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle item selection
+        // Handle item selection
         switch (item.getItemId()) {
             case R.id.search:
                 Toast.makeText(GridActivity.this, "Searched", Toast.LENGTH_SHORT).show();
@@ -73,36 +59,24 @@ public class GridActivity extends Activity {
     }
 
     public String postRequest() {
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost("https://api.artsy.net/api/tokens/xapp_token");
+        String BASE_URL = "https://api.artsy.net/api/tokens/xapp_token";
 
-        post.setHeader("Authorization", "Basic (with a username and password)");
-        post.setHeader("Content-type", "application/json");
+        Request request = new Request();
+        request.setUrl(BASE_URL);
+        request.addParameter("client_id", "a24764bd3ae92bc348ae");
+        request.addParameter("client_secret", "3e3fa9b294423b17b6d674da242e03c7");
 
         try {
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-            urlParameters.add(new BasicNameValuePair("client_id", "a24764bd3ae92bc348ae"));
-            urlParameters.add(new BasicNameValuePair("client_secret", "3e3fa9b294423b17b6d674da242e03c7"));
-
-            post.setEntity(new UrlEncodedFormEntity(urlParameters));
-
-            HttpResponse response = client.execute(post);
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-
-            JSONObject o = new JSONObject(result.toString());
-            String xapp_token = o.get("token").toString();
-            System.out.println(xapp_token);
-            return xapp_token;
-
+            request.makeCall();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+
+        try {
+            JSONObject object = new JSONObject(request.toString());
+            return object.getString("token");
+        } catch (Exception e) {
+            System.out.println(e);
         }
         return null;
     }

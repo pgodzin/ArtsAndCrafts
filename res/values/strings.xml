@@ -3,4 +3,6 @@
     <string name="app_name">MyActivity</string>
     <string name="search">Search</string>
     <string name="main_header">Select a genre of art or search for art above!</string>
+    <string name="app_label">Arts and Crafts</string>
+    <string name="search_hint">Search artist or artwork</string>
 </resources>
