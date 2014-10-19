@@ -1,11 +1,13 @@
 package com.example.artsandcrafts;
 
+import android.app.SearchManager;
+import android.provider.SearchRecentSuggestions;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -44,6 +46,30 @@ public class GridActivity extends Activity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+// If the nav drawer is open, hide action items related to the content view
+        menu.findItem(R.id.search).setVisible(true);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.search:
+                Toast.makeText(GridActivity.this, "Searched", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public String postRequest() {
